@@ -29,11 +29,10 @@ app.get('/api/v1/items', (request, response) => {
 
 app.post('/api/v1/items', (request, response) => {
   const item = request.body;
-
-  for (let requiredParameter of ['name', 'packed']) {
+  for (let requiredParameter of ['name']) {
     if (!item[requiredParameter]) {
       return response.status(422).send({
-        error: `You are missing a ${requiredParameter} for your item!`
+        error: `You are missing a ${requiredParameter} property for your item!`
       });
     }
   }
@@ -79,7 +78,7 @@ app.delete('/api/v1/items/:id', (request, response) => {
           .status(404)
           .json({ error: 'could not find requested item' });
       }
-      response.status(200).json(`Successfully deleted ${deletedItem}`);
+      response.status(202).json(deletedItem);
     })
     .catch(error => {
       response.status(500).json({ error });
